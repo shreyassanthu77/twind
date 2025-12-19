@@ -4,46 +4,33 @@ Tailwind-style utility classes for Flutter widgets with compile-time code genera
 
 ## Packages
 
-- [`twind`](./packages/twind) - Runtime annotations and core types
-- [`twind_generator`](./packages/twind_generator) - Code generator
-
-## Development
-
-This is a monorepo managed with [Melos](https://melos.invertase.dev/).
-
-### Setup
-
-```bash
-# Install melos (optional, can use pub directly)
-dart pub global activate melos
-
-# Get dependencies for each package
-cd packages/twind && flutter pub get
-cd ../twind_generator && dart pub get
-```
-
-### Commands
-
-```bash
-# Run tests
-cd packages/twind && flutter test
-
-# Analyze code
-cd packages/twind && flutter analyze
-cd packages/twind_generator && dart analyze
-
-# Format code
-dart format packages/*/lib packages/*/test
-```
+- [`twind`](./packages/twind) - Runtime annotations and core types  
+  [![pub package](https://img.shields.io/pub/v/twind.svg)](https://pub.dev/packages/twind)
+- [`twind_generator`](./packages/twind_generator) - Code generator  
+  [![pub package](https://img.shields.io/pub/v/twind_generator.svg)](https://pub.dev/packages/twind_generator)
 
 ## Publishing
 
-### Manual Publishing (Current Method)
+### Automated (via GitHub Actions)
 
-1. Update version in both `packages/twind/pubspec.yaml` and `packages/twind_generator/pubspec.yaml`
+1. Update versions in `packages/twind/pubspec.yaml` and `packages/twind_generator/pubspec.yaml`
 2. Update CHANGELOGs
-3. Commit and push changes
-4. Publish manually:
+3. Commit and push
+4. Create and push tags:
+
+```bash
+# For twind
+git tag twind-v0.0.X
+git push origin twind-v0.0.X
+
+# For twind_generator  
+git tag twind_generator-v0.0.X
+git push origin twind_generator-v0.0.X
+```
+
+GitHub Actions will automatically publish to pub.dev using OIDC authentication.
+
+### Manual Publishing
 
 ```bash
 cd packages/twind
@@ -53,16 +40,20 @@ cd ../twind_generator
 dart pub publish
 ```
 
-5. Create and push tag:
+## Development
 
 ```bash
-git tag v0.0.X
-git push origin v0.0.X
+# Get dependencies
+cd packages/twind && flutter pub get
+cd ../twind_generator && dart pub get
+
+# Run tests
+cd packages/twind && flutter test
+
+# Analyze
+cd packages/twind && flutter analyze
+cd packages/twind_generator && dart analyze
 ```
-
-### Automated Publishing (Coming Soon)
-
-GitHub Actions workflow exists but requires pub.dev credentials setup. For now, use manual publishing.
 
 ## License
 
