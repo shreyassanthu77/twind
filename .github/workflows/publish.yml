@@ -17,11 +17,13 @@ jobs:
         with:
           channel: 'stable'
       
-      - name: Install Melos
-        run: dart pub global activate melos
+      - name: Get dependencies (twind)
+        working-directory: packages/twind
+        run: flutter pub get
       
-      - name: Bootstrap Melos
-        run: melos bootstrap
+      - name: Get dependencies (twind_generator)
+        working-directory: packages/twind_generator
+        run: dart pub get
       
       - name: Publish twind
         working-directory: packages/twind

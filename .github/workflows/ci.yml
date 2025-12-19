@@ -16,17 +16,29 @@ jobs:
         with:
           channel: 'stable'
       
-      - name: Install Melos
-        run: dart pub global activate melos
+      - name: Get dependencies (twind)
+        working-directory: packages/twind
+        run: flutter pub get
       
-      - name: Bootstrap
-        run: melos bootstrap
+      - name: Get dependencies (twind_generator)
+        working-directory: packages/twind_generator
+        run: dart pub get
       
-      - name: Analyze
-        run: melos run analyze
+      - name: Analyze twind
+        working-directory: packages/twind
+        run: flutter analyze
       
-      - name: Format Check
-        run: melos run format:check
+      - name: Analyze twind_generator
+        working-directory: packages/twind_generator
+        run: dart analyze
+      
+      - name: Format check twind
+        working-directory: packages/twind
+        run: dart format --set-exit-if-changed lib test
+      
+      - name: Format check twind_generator
+        working-directory: packages/twind_generator
+        run: dart format --set-exit-if-changed lib
   
   test:
     runs-on: ubuntu-latest
@@ -37,11 +49,10 @@ jobs:
         with:
           channel: 'stable'
       
-      - name: Install Melos
-        run: dart pub global activate melos
+      - name: Get dependencies (twind)
+        working-directory: packages/twind
+        run: flutter pub get
       
-      - name: Bootstrap
-        run: melos bootstrap
-      
-      - name: Test
-        run: melos run test
+      - name: Test twind
+        working-directory: packages/twind
+        run: flutter test
