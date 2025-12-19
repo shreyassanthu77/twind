@@ -2,7 +2,7 @@ name: twind
 repository: https://github.com/shreyassanthu77/twind
 
 packages:
-  - packages/**
+  - packages/*
 
 scripts:
   analyze:

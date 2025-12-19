@@ -1,3 +1,5 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+- Initial release
+- Basic `@Tw()` annotation support
+- Code generation infrastructure
