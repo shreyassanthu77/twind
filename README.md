@@ -9,6 +9,26 @@ Tailwind-style utility classes for Flutter widgets with compile-time code genera
 - [`twind_generator`](./packages/twind_generator) - Code generator  
   [![pub package](https://img.shields.io/pub/v/twind_generator.svg)](https://pub.dev/packages/twind_generator)
 
+## Development
+
+This is a simple monorepo with two packages. No special tooling required.
+
+```bash
+# Get dependencies
+cd packages/twind && flutter pub get
+cd packages/twind_generator && dart pub get
+
+# Run tests
+cd packages/twind && flutter test
+
+# Analyze
+cd packages/twind && flutter analyze
+cd packages/twind_generator && dart analyze
+
+# Format
+dart format packages/*/lib packages/*/test
+```
+
 ## Publishing
 
 ### Automated (via GitHub Actions)
@@ -32,28 +52,7 @@ GitHub Actions will automatically publish to pub.dev using OIDC authentication.
 
 ### Manual Publishing
 
-```bash
-cd packages/twind
-dart pub publish
-
-cd ../twind_generator
-dart pub publish
-```
-
-## Development
-
-```bash
-# Get dependencies
-cd packages/twind && flutter pub get
-cd ../twind_generator && dart pub get
-
-# Run tests
-cd packages/twind && flutter test
-
-# Analyze
-cd packages/twind && flutter analyze
-cd packages/twind_generator && dart analyze
-```
+Manual publishing is disabled. Use GitHub Actions by pushing tags.
 
 ## License
 
