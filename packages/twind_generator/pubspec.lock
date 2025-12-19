@@ -494,9 +494,10 @@ packages:
   twind:
     dependency: "direct main"
     description:
-      path: "../twind"
-      relative: true
-    source: path
+      name: twind
+      sha256: "9cd4948f062e7b5cc48d43319762c314428adf6ae207a62bcdfdb490bfffe257"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   typed_data:
     dependency: transitive

@@ -6,21 +6,25 @@ packages:
 
 scripts:
   analyze:
-    run: dart analyze .
+    exec: flutter analyze
     description: Run Dart analyzer in all packages
 
   test:
-    run: flutter test
+    exec: flutter test
     description: Run tests in all packages
     
   get:
-    run: flutter pub get
+    exec: flutter pub get
     description: Get dependencies for all packages
 
   format:
-    run: dart format .
+    exec: dart format lib test
     description: Format all Dart code
 
+  format:check:
+    exec: dart format --set-exit-if-changed lib test
+    description: Check Dart code formatting
+
   clean:
-    run: flutter clean
+    exec: flutter clean
     description: Clean all packages

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+          channel: 'stable'
+      
+      - name: Install Melos
+        run: dart pub global activate melos
+      
+      - name: Bootstrap
+        run: melos bootstrap
+      
+      - name: Analyze
+        run: melos run analyze
+      
+      - name: Format
+        run: melos run format --set-exit-if-changed
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+          channel: 'stable'
+      
+      - name: Install Melos
+        run: dart pub global activate melos
+      
+      - name: Bootstrap
+        run: melos bootstrap
+      
+      - name: Test
+        run: melos run test
