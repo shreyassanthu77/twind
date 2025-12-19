@@ -3,7 +3,7 @@ import 'package:twind/twind.dart';
 
 void main() {
   test('Tw annotation exists', () {
-    const annotation = Tw();
+    const annotation = Tw('');
     expect(annotation, isA<Tw>());
   });
 }

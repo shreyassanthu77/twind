@@ -21,7 +21,7 @@ import 'package:twind/twind.dart';
 
 part 'my_widget.g.dart';
 
-@Tw()
+@Tw('')
 class MyButton extends _$MyButton {
   const MyButton({super.key, required super.child});
 }

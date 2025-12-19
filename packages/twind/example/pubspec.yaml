@@ -1,0 +1,27 @@
+name: twind_example
+publish_to: none
+
+description: Example app for twind code generation.
+version: 0.0.0
+
+environment:
+  sdk: ^3.10.1
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  twind:
+    path: ..
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.0
+  twind_generator:
+    path: ../../twind_generator
+
+dependency_overrides:
+  twind:
+    path: ..

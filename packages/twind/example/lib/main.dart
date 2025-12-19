@@ -1,0 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'example.dart';
+
+void main() {
+  runApp(const MaterialApp(home: Scaffold(body: RedBox())));
+}

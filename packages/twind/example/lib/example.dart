@@ -3,7 +3,15 @@ import 'package:twind/twind.dart';
 
 part 'example.g.dart';
 
-@Tw()
-class RedBox extends _$RedBox {
-  const RedBox({super.key, required super.child});
+class RedBox extends StatelessWidget with _$RedBox {
+  const RedBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _red(child: SizedBox());
+  }
+
+  @override
+  @Tw('bg-red-500 px-4 py-2')
+  Widget _red({final Widget? child});
 }

@@ -5,5 +5,5 @@ import 'tw_generator.dart';
 
 /// Builds generators for the `@Tw()` annotation.
 Builder twBuilder(BuilderOptions options) {
-  return SharedPartBuilder([TwGenerator()], 'tw');
+  return SharedPartBuilder([TwGenerator()], 'twind');
 }
