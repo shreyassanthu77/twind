@@ -1,3 +1,7 @@
+## 0.0.3
+
+- Setup automated GitHub Actions publishing with OIDC
+
 ## 0.0.2
 
 - Fix CI/CD workflows
