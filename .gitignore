@@ -27,5 +27,8 @@ migrate_working_dir/
 **/doc/api/
 .dart_tool/
 .flutter-plugins-dependencies
-/build/
-/coverage/
+build/
+coverage/
+
+# Pub workspaces overrides (optional)
+pubspec_overrides.yaml

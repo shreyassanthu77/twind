@@ -11,22 +11,47 @@ Tailwind-style utility classes for Flutter widgets with compile-time code genera
 
 ## Development
 
-This is a simple monorepo with two packages. No special tooling required.
+This repo is a Dart **pub workspace** (monorepo support), so you can run a
+single `dart pub get` at the repo root.
+
+For convenience, common tasks are defined in `deno.json`.
 
 ```bash
-# Get dependencies
-cd packages/twind && flutter pub get
-cd packages/twind_generator && dart pub get
+# Get dependencies (workspace)
+deno task get
 
-# Run tests
+# Format / analyze / test
+deno task fmt
+deno task analyze
+deno task test
+
+# Targeted runs
+deno task test:twind
+deno task test:generator
+
+# Publish dry-runs (recommended before tagging)
+deno task dpub
+```
+
+Manual equivalents (no Deno):
+
+```bash
+# Dependencies
+dart pub get
+
+# Tests
 cd packages/twind && flutter test
+cd packages/twind_generator && dart test
 
 # Analyze
-cd packages/twind && flutter analyze
-cd packages/twind_generator && dart analyze
+flutter analyze packages/twind
+dart analyze packages/twind_generator
 
 # Format
 dart format packages/*/lib packages/*/test
+
+# Code generation
+cd packages/twind && dart run build_runner build --delete-conflicting-outputs
 ```
 
 ## Publishing

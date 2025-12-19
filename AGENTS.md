@@ -2,14 +2,22 @@
 
 ## Commands
 ```bash
-# Run tests (single test: add file path)
+# Repo-level tasks (preferred)
+deno task get
+deno task fmt
+deno task analyze
+deno task test
+
+# Publish dry-runs
+# (useful before tagging for release)
+deno task dpub
+
+# Package-level commands (for debugging)
 cd packages/twind && flutter test [test/path_test.dart]
 cd packages/twind_generator && dart test
 
-# Analyze & format
 flutter analyze packages/twind
 dart analyze packages/twind_generator
-dart format packages/*/lib packages/*/test
 
 # Code generation
 cd packages/twind && dart run build_runner build --delete-conflicting-outputs

@@ -1,0 +1,21 @@
+{
+  "tasks": {
+    "get": "dart pub get",
+    "fmt": "dart format packages/*/lib packages/*/test",
+    "analyze:twind": "flutter analyze packages/twind",
+    "analyze:generator": "dart analyze packages/twind_generator",
+    "analyze": {
+      "dependencies": ["analyze:twind", "analyze:generator"]
+    },
+    "test:twind": "cd packages/twind && flutter test",
+    "test:generator": "cd packages/twind_generator && dart test",
+    "test": {
+      "dependencies": ["test:twind", "test:generator"]
+    },
+    "publish:dry:twind": "dart pub -C packages/twind publish --dry-run",
+    "publish:dry:generator": "dart pub -C packages/twind_generator publish --dry-run",
+    "dpub": {
+      "dependencies": ["publish:dry:twind", "publish:dry:generator"]
+    }
+  }
+}
