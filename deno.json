@@ -1,16 +1,16 @@
 {
   "tasks": {
     "get": "dart pub get",
-    "fmt": "dart format packages/*/lib packages/*/test",
+    "fmt": "dart format packages/*/lib packages/twind_generator/test packages/twind/example/lib packages/twind/example/test",
     "analyze:twind": "flutter analyze packages/twind",
     "analyze:generator": "dart analyze packages/twind_generator",
     "analyze": {
       "dependencies": ["analyze:twind", "analyze:generator"]
     },
-    "test:twind": "cd packages/twind && flutter test",
     "test:generator": "cd packages/twind_generator && dart test",
+    "e2e": "cd packages/twind/example && flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs && flutter test",
     "test": {
-      "dependencies": ["test:twind", "test:generator"]
+      "dependencies": ["test:generator", "e2e"]
     },
     "publish:dry:twind": "dart pub -C packages/twind publish --dry-run",
     "publish:dry:generator": "dart pub -C packages/twind_generator publish --dry-run",

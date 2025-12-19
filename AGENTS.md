@@ -13,14 +13,14 @@ deno task test
 deno task dpub
 
 # Package-level commands (for debugging)
-cd packages/twind && flutter test [test/path_test.dart]
 cd packages/twind_generator && dart test
+cd packages/twind/example && flutter test
 
 flutter analyze packages/twind
 dart analyze packages/twind_generator
 
 # Code generation
-cd packages/twind && dart run build_runner build --delete-conflicting-outputs
+cd packages/twind/example && flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ## Style

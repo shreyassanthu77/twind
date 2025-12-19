@@ -19,6 +19,10 @@ jobs:
       - name: Get dependencies (twind)
         working-directory: packages/twind
         run: flutter pub get
+
+      - name: Get dependencies (twind_example)
+        working-directory: packages/twind/example
+        run: flutter pub get
       
       - name: Get dependencies (twind_generator)
         working-directory: packages/twind_generator
@@ -34,11 +38,11 @@ jobs:
       
       - name: Format check twind
         working-directory: packages/twind
-        run: dart format --set-exit-if-changed lib test
+        run: dart format --set-exit-if-changed lib example/lib example/test
       
       - name: Format check twind_generator
         working-directory: packages/twind_generator
-        run: dart format --set-exit-if-changed lib
+        run: dart format --set-exit-if-changed lib test
   
   test:
     runs-on: ubuntu-latest
@@ -49,10 +53,22 @@ jobs:
         with:
           channel: 'stable'
       
-      - name: Get dependencies (twind)
-        working-directory: packages/twind
-        run: flutter pub get
+      - name: Get dependencies (twind_generator)
+        working-directory: packages/twind_generator
+        run: dart pub get
       
-      - name: Test twind
-        working-directory: packages/twind
+      - name: Test twind_generator
+        working-directory: packages/twind_generator
+        run: dart test
+
+      - name: Get dependencies (twind_example)
+        working-directory: packages/twind/example
+        run: flutter pub get
+
+      - name: Generate code (twind_example)
+        working-directory: packages/twind/example
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Test twind_example
+        working-directory: packages/twind/example
         run: flutter test

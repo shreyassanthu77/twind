@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      twind_generator|tw:
+        generate_for:
+          - lib/**.dart

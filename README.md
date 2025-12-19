@@ -26,8 +26,8 @@ deno task analyze
 deno task test
 
 # Targeted runs
-deno task test:twind
 deno task test:generator
+deno task e2e
 
 # Publish dry-runs (recommended before tagging)
 deno task dpub
@@ -40,18 +40,18 @@ Manual equivalents (no Deno):
 dart pub get
 
 # Tests
-cd packages/twind && flutter test
 cd packages/twind_generator && dart test
+cd packages/twind/example && flutter test
 
 # Analyze
 flutter analyze packages/twind
 dart analyze packages/twind_generator
 
 # Format
-dart format packages/*/lib packages/*/test
+dart format packages/*/lib packages/twind_generator/test packages/twind/example/lib packages/twind/example/test
 
 # Code generation
-cd packages/twind && dart run build_runner build --delete-conflicting-outputs
+cd packages/twind/example && flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ## Publishing
