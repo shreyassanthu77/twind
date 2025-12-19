@@ -1,7 +1,7 @@
 name: twind
 description: Tailwind-style utility classes for Flutter widgets with compile-time code generation.
 version: 0.0.1
-homepage: https://github.com/shreyassanthu77/twind
+repository: https://github.com/shreyassanthu77/twind
 
 environment:
   sdk: ^3.10.1
@@ -15,5 +15,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-
-flutter:
+  twind_generator:
+    path: ../twind_generator
+  build_runner: ^2.4.0

@@ -1,0 +1,18 @@
+name: twind_generator
+description: Code generator for twind package.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  build: ^2.4.0
+  source_gen: ^1.5.0
+  analyzer: ^6.0.0
+  twind:
+    path: ../twind
+
+dev_dependencies:
+  test: ^1.24.0
+  build_runner: ^2.4.0

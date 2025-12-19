@@ -1,0 +1,26 @@
+name: twind
+repository: https://github.com/shreyassanthu77/twind
+
+packages:
+  - packages/**
+
+scripts:
+  analyze:
+    run: dart analyze .
+    description: Run Dart analyzer in all packages
+
+  test:
+    run: flutter test
+    description: Run tests in all packages
+    
+  get:
+    run: flutter pub get
+    description: Get dependencies for all packages
+
+  format:
+    run: dart format .
+    description: Format all Dart code
+
+  clean:
+    run: flutter clean
+    description: Clean all packages
