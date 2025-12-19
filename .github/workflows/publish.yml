@@ -8,22 +8,35 @@ on:
 jobs:
   publish:
     permissions:
-      id-token: write # Required for authentication using OIDC
+      id-token: write # Required for OIDC authentication
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
       
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       
-      - name: Get dependencies (twind)
-        working-directory: packages/twind
-        run: flutter pub get
-      
-      - name: Get dependencies (twind_generator)
-        working-directory: packages/twind_generator
-        run: dart pub get
+      - name: Setup pub credentials
+        run: |
+          mkdir -p ~/.pub-cache
+          cat <<EOF > ~/.pub-cache/credentials.json
+          {
+            "accessToken": "${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}",
+            "refreshToken": "${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}",
+            "tokenEndpoint": "https://accounts.google.com/o/oauth2/token",
+            "scopes": ["openid", "https://www.googleapis.com/auth/userinfo.email"],
+            "expiration": 1234567890000
+          }
+          EOF
+        if: env.PUB_DEV_PUBLISH_ACCESS_TOKEN != ''
+        env:
+          PUB_DEV_PUBLISH_ACCESS_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
+          PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
       
       - name: Publish twind
         working-directory: packages/twind

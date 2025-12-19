@@ -14,46 +14,36 @@ This is a monorepo managed with [Melos](https://melos.invertase.dev/).
 ### Setup
 
 ```bash
-# Install melos
+# Install melos (optional, can use pub directly)
 dart pub global activate melos
 
-# Bootstrap the workspace
-melos bootstrap
+# Get dependencies for each package
+cd packages/twind && flutter pub get
+cd ../twind_generator && dart pub get
 ```
 
 ### Commands
 
 ```bash
 # Run tests
-melos run test
+cd packages/twind && flutter test
 
 # Analyze code
-melos run analyze
+cd packages/twind && flutter analyze
+cd packages/twind_generator && dart analyze
 
 # Format code
-melos run format
-
-# Check formatting
-melos run format:check
+dart format packages/*/lib packages/*/test
 ```
 
 ## Publishing
 
-### Automated (via GitHub Actions)
+### Manual Publishing (Current Method)
 
 1. Update version in both `packages/twind/pubspec.yaml` and `packages/twind_generator/pubspec.yaml`
 2. Update CHANGELOGs
-3. Commit changes
-4. Create and push a tag:
-
-```bash
-git tag v0.0.2
-git push origin v0.0.2
-```
-
-GitHub Actions will automatically publish to pub.dev.
-
-### Manual
+3. Commit and push changes
+4. Publish manually:
 
 ```bash
 cd packages/twind
@@ -62,6 +52,17 @@ dart pub publish
 cd ../twind_generator
 dart pub publish
 ```
+
+5. Create and push tag:
+
+```bash
+git tag v0.0.X
+git push origin v0.0.X
+```
+
+### Automated Publishing (Coming Soon)
+
+GitHub Actions workflow exists but requires pub.dev credentials setup. For now, use manual publishing.
 
 ## License
 
