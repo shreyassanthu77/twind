@@ -8,10 +8,10 @@ class RedBox extends StatelessWidget with _$RedBox {
 
   @override
   Widget build(BuildContext context) {
-    return _red(child: const SizedBox());
+    return _red(const SizedBox());
   }
 
   @override
   @Tw('bg-red-500 px-4 py-2')
-  Widget _red({required Widget child});
+  Widget _red(Widget child, {bool enabled = true});
 }

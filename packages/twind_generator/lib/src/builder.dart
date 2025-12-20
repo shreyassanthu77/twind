@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:twind/twind.dart';
-
-import 'candidate.dart';
 
 /// Builds generators for the `@Tw()` annotation.
 Builder twindBuilder(BuilderOptions options) {
@@ -17,7 +14,7 @@ typedef Methods = List<(MethodElement, String)>;
 typedef Classes = List<(ClassElement, Methods)>;
 
 class _TwindGenerator extends Generator {
-  static final _twindAnnoationChecker = TypeChecker.fromRuntime(Tw);
+  static final _twindAnnoationChecker = TypeChecker.typeNamed(Tw);
 
   static final _widgetChecker = TypeChecker.fromUrl(
     'package:flutter/src/widgets/framework.dart#Widget',
@@ -52,7 +49,7 @@ class _TwindGenerator extends Generator {
     for (final (cls, methods) in classes) {
       output.writeln('mixin _\$${cls.displayName} {');
       for (final (method, className) in methods) {
-        final signature = method.getDisplayString(withNullability: true);
+        final signature = method.displayString();
         final _ = className;
         output.writeln('  $signature {');
         output.writeln('    return child;');
@@ -80,11 +77,10 @@ class _TwindGenerator extends Generator {
     }
 
     var hadChildParam = false;
-    for (final parameter in method.parameters) {
+    for (final parameter in method.formalParameters) {
       if (parameter.name == 'child') {
-        final isRequired =
-            parameter.isRequiredNamed || parameter.isRequiredPositional;
-        if (!isRequired) {
+        final isNullable = parameter.type.nullabilitySuffix != .none;
+        if (!parameter.isRequired || parameter.isOptional || isNullable) {
           throw InvalidGenerationSourceError(
             '`@Tw()` child parameter must be required.',
             element: method,

@@ -7,7 +7,7 @@ part of 'example.dart';
 // **************************************************************************
 
 mixin _$RedBox {
-  Widget _red({required Widget child}) {
+  Widget _red(Widget child, {bool enabled = true}) {
     return child;
   }
 }
