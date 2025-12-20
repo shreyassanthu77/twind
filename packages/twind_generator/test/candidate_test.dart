@@ -14,22 +14,21 @@ void main() {
           const Candidate(
             variants: [],
             root: 'underline',
-            values: [],
+            value: NoValue(),
             modifier: null,
           ),
         ),
       );
     });
 
-    test('root with leading minus', () {
+    test('root with leading minus (no value)', () {
       expect(
         Candidate.tryParse('-bg'),
         equals(
           const Candidate(
             variants: [],
             root: 'bg',
-            values: [],
-            leadingMinus: true,
+            value: NoValue(),
             modifier: null,
           ),
         ),
@@ -43,7 +42,7 @@ void main() {
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red'],
+            value: StringValue('red'),
             modifier: null,
           ),
         ),
@@ -57,37 +56,35 @@ void main() {
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red'],
-            leadingMinus: true,
+            value: StringValue('red', true),
             modifier: null,
           ),
         ),
       );
     });
 
-    test('root with multiple values', () {
+    test('root with multi-part value', () {
       expect(
         Candidate.tryParse('bg-red-500'),
         equals(
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red', '500'],
+            value: StringValue('red-500'),
             modifier: null,
           ),
         ),
       );
     });
 
-    test('root with leading minus and multiple values', () {
+    test('root with leading minus and multi-part value', () {
       expect(
         Candidate.tryParse('-bg-red-500'),
         equals(
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
+            value: StringValue('red-500', true),
             modifier: null,
           ),
         ),
@@ -101,7 +98,7 @@ void main() {
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red', '500'],
+            value: StringValue('red-500'),
             modifier: '20',
           ),
         ),
@@ -115,38 +112,22 @@ void main() {
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
+            value: StringValue('red-500', true),
             modifier: '20',
           ),
         ),
       );
     });
 
-    test('root with modifier and value', () {
+    test('root with arbitrary value and modifier', () {
       expect(
-        Candidate.tryParse('bg-red-500/20'),
+        Candidate.tryParse('bg-[rgb(0_0_0)]/50'),
         equals(
           const Candidate(
             variants: [],
             root: 'bg',
-            values: ['red', '500'],
-            modifier: '20',
-          ),
-        ),
-      );
-    });
-
-    test('root with leading minus and modifier and value', () {
-      expect(
-        Candidate.tryParse('-bg-red-500/20'),
-        equals(
-          const Candidate(
-            variants: [],
-            root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
-            modifier: '20',
+            value: ArbitraryValue('rgb(0_0_0)'),
+            modifier: '50',
           ),
         ),
       );
@@ -159,7 +140,7 @@ void main() {
           const Candidate(
             variants: ['md'],
             root: 'bg',
-            values: ['red', '500'],
+            value: StringValue('red-500'),
             modifier: null,
           ),
         ),
@@ -173,8 +154,7 @@ void main() {
           const Candidate(
             variants: ['md'],
             root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
+            value: StringValue('red-500', true),
             modifier: null,
           ),
         ),
@@ -188,7 +168,7 @@ void main() {
           const Candidate(
             variants: ['md', 'active'],
             root: 'bg',
-            values: ['red', '500'],
+            value: StringValue('red-500'),
             modifier: null,
           ),
         ),
@@ -202,8 +182,7 @@ void main() {
           const Candidate(
             variants: ['md', 'active'],
             root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
+            value: StringValue('red-500', true),
             modifier: null,
           ),
         ),
@@ -217,7 +196,7 @@ void main() {
           const Candidate(
             variants: ['md'],
             root: 'bg',
-            values: ['red', '500'],
+            value: StringValue('red-500'),
             modifier: '20',
           ),
         ),
@@ -231,8 +210,7 @@ void main() {
           const Candidate(
             variants: ['md'],
             root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
+            value: StringValue('red-500', true),
             modifier: '20',
           ),
         ),
@@ -246,7 +224,7 @@ void main() {
           const Candidate(
             variants: ['md', 'active'],
             root: 'bg',
-            values: ['red', '500'],
+            value: StringValue('red-500'),
             modifier: '20',
           ),
         ),
@@ -260,8 +238,7 @@ void main() {
           const Candidate(
             variants: ['md', 'active'],
             root: 'bg',
-            values: ['red', '500'],
-            leadingMinus: true,
+            value: StringValue('red-500', true),
             modifier: '20',
           ),
         ),
@@ -279,7 +256,7 @@ void main() {
         const Candidate(
           variants: [],
           root: 'bg',
-          values: ['red', '500'],
+          value: StringValue('red-500'),
           modifier: null,
         ),
       ]);
@@ -291,25 +268,25 @@ void main() {
         const Candidate(
           variants: [],
           root: 'px',
-          values: ['4'],
+          value: StringValue('4'),
           modifier: null,
         ),
         const Candidate(
           variants: [],
           root: 'py',
-          values: ['2'],
+          value: StringValue('2'),
           modifier: null,
         ),
         const Candidate(
           variants: [],
           root: 'bg',
-          values: ['red', '500'],
+          value: StringValue('red-500'),
           modifier: '20',
         ),
         const Candidate(
           variants: ['md'],
           root: 'bg',
-          values: ['red', '500'],
+          value: StringValue('red-500'),
           modifier: null,
         ),
       ]);

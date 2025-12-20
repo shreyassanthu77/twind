@@ -1,54 +1,55 @@
-/// A candidate represents a single tailwind class.
-/// For example,
-/// `md:active:bg-red-500/20`
-/// is a candidate with the following properties:
-/// - root: `"bg"`
-/// - variants: `["md", "active"]`
-/// - values: `["red", "500"]`
-/// - modifier: `20`
+/// Candidate :: Variant* '-'? Root ('-' Value)? ('/' Modifier)?
 ///
-/// root can optionally be prefixed with a minus sign (`-`).
-/// This is usually used to flip the sign of the value associated with the root.
-/// For example, `-top-4` will have a tap value of `-4`.
+/// Variant :: any ':'
+///
+/// Root :: [a-zA-Z_][a-zA-Z_]*
+/// Value :: ArbitraryValue | StringListValue
+/// ArbitraryValue :: '[' any+ ']'
+/// StringListValue :: any+
+/// Modifier :: any+
 final class Candidate {
   final List<String> variants;
   final String root;
-  final bool leadingMinus;
-  final List<String> values;
+  final Value value;
   final String? modifier;
 
   const Candidate({
     required this.variants,
     required this.root,
-    required this.values,
-    this.leadingMinus = false,
+    required this.value,
     this.modifier,
   });
 
   static Candidate? tryParse(final String candidate) {
     if (candidate.isEmpty) return null;
-
-    final (variants, rest) = switch (candidate.trim().split(':')) {
-      [final single] => (<String>[], single),
-      [...final variants, final last] => (variants, last),
-      _ => throw ArgumentError('Invalid candidate: `$candidate`.'),
-    };
-    final modifierIdx = rest.lastIndexOf('/');
-    final (rootValues, modifier) = switch (modifierIdx) {
+    final [...variants, rest] = candidate.split(':');
+    final (rootWithValue0, modifier) = switch (rest.lastIndexOf('/')) {
       -1 => (rest, null as String?),
       final idx => (rest.substring(0, idx), rest.substring(idx + 1)),
     };
-    final (leadingMinux, root, values) = switch (rootValues.split("-")) {
-      ["", final root, ...final values] => (true, root, values),
-      [final root, ...final values] => (false, root, values),
-      _ => throw ArgumentError('Invalid candidate: `$candidate`.'),
+    final (leadingMinux, rootWithValue) = switch (rootWithValue0[0]) {
+      '-' => (true, rootWithValue0.substring(1)),
+      _ => (false, rootWithValue0),
+    };
+    final (root, maybeValue) = switch (rootWithValue.indexOf('-')) {
+      -1 => (rootWithValue, null as String?),
+      final idx => (
+        rootWithValue.substring(0, idx),
+        rootWithValue.substring(idx + 1),
+      ),
+    };
+    final value = switch (maybeValue) {
+      null => const NoValue(),
+      final s when s.startsWith('[') && s.endsWith(']') => ArbitraryValue(
+        s.substring(1, s.length - 1),
+      ),
+      final s => StringValue(s, leadingMinux),
     };
     return Candidate(
       variants: variants,
       root: root,
-      values: values,
+      value: value,
       modifier: modifier,
-      leadingMinus: leadingMinux,
     );
   }
 
@@ -67,26 +68,73 @@ final class Candidate {
     return other is Candidate &&
         _listEquals(variants, other.variants) &&
         root == other.root &&
-        _listEquals(values, other.values) &&
-        modifier == other.modifier &&
-        leadingMinus == other.leadingMinus;
+        value == other.value &&
+        modifier == other.modifier;
   }
 
   @override
   int get hashCode {
-    return Object.hash(
-      Object.hashAll(variants),
-      root,
-      Object.hashAll(values),
-      modifier,
-      leadingMinus,
-    );
+    return Object.hash(Object.hashAll(variants), root, value, modifier);
   }
 
   @override
   String toString() {
-    return 'Candidate{variants: $variants, leadingMinus: $leadingMinus, root: "$root", values: $values, modifier: $modifier}';
+    return 'Candidate{variants: $variants, root: "$root", value: $value, modifier: $modifier}';
   }
+}
+
+sealed class Value {
+  const Value();
+}
+
+final class NoValue extends Value {
+  const NoValue();
+
+  @override
+  bool operator ==(Object other) => other is NoValue;
+
+  @override
+  int get hashCode => 0;
+
+  @override
+  String toString() => 'NoValue';
+}
+
+final class ArbitraryValue extends Value {
+  final String inner;
+
+  const ArbitraryValue(this.inner);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is ArbitraryValue && inner == other.inner;
+
+  @override
+  int get hashCode => inner.hashCode;
+
+  @override
+  String toString() => 'ArbitraryValue{inner: "$inner"}';
+}
+
+final class StringValue extends Value {
+  final bool leadingMinus;
+  final String inner;
+
+  const StringValue(this.inner, [this.leadingMinus = false]);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StringValue &&
+          inner == other.inner &&
+          leadingMinus == other.leadingMinus;
+
+  @override
+  int get hashCode => Object.hash(inner, leadingMinus);
+
+  @override
+  String toString() =>
+      'StringValue{inner: "$inner", leadingMinus: $leadingMinus}';
 }
 
 final _whitespace = RegExp(r'\s+');
