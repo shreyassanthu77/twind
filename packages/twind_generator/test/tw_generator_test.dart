@@ -3,6 +3,8 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 import 'package:twind_generator/twind_generator.dart';
 
+import 'example.dart';
+
 void main() {
   //   test('generates a mixin for @Tw() methods', () async {
   //     const input = """
