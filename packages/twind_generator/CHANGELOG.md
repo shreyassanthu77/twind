@@ -1,3 +1,7 @@
+## 0.0.4
+
+N/A
+
 ## 0.0.3
 
 - Setup automated GitHub Actions publishing with OIDC
