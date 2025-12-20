@@ -4,6 +4,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:twind/twind.dart';
+import 'package:twind_generator/src/candidate.dart';
+import 'package:twind_generator/src/widget_generator.dart';
 
 /// Builds generators for the `@Tw()` annotation.
 Builder twindBuilder(BuilderOptions options) {
@@ -51,9 +53,9 @@ class _TwindGenerator extends Generator {
       output.writeln('mixin _\$${cls.displayName} {');
       for (final (method, className) in methods) {
         final signature = method.displayString();
-        final _ = className;
+        final out = generateWidget(parseCandidates(className), method);
         output.writeln('  $signature {');
-        output.writeln('    return child;');
+        output.writeln('    return $out;');
         output.writeln('  }');
       }
       output.writeln('}');

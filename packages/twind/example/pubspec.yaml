@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  build_runner: ^2.4.0
+  build_runner: ^2.10.0
   twind_generator:
 
 dependency_overrides:

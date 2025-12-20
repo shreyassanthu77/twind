@@ -446,14 +446,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   twind_generator:
     dependency: "direct dev"
     description:
       path: "../../twind_generator"
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   typed_data:
     dependency: transitive
     description:

@@ -12,6 +12,6 @@ class RedBox extends StatelessWidget with _$RedBox {
   }
 
   @override
-  @Tw('bg-red-500 px-4 py-2')
+  @Tw('bg-[#ff0000] px-4 py-2')
   Widget _red(Widget child);
 }
