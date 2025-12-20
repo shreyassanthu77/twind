@@ -56,28 +56,8 @@ cd packages/twind/example && flutter pub run build_runner build --delete-conflic
 
 ## Publishing
 
-### Automated (via GitHub Actions)
-
-1. Update versions in `packages/twind/pubspec.yaml` and `packages/twind_generator/pubspec.yaml`
-2. Update CHANGELOGs
-3. Commit and push
-4. Create and push tags:
-
-```bash
-# For twind
-git tag twind-v0.0.X
-git push origin twind-v0.0.X
-
-# For twind_generator  
-git tag twind_generator-v0.0.X
-git push origin twind_generator-v0.0.X
-```
-
-GitHub Actions will automatically publish to pub.dev using OIDC authentication.
-
-### Manual Publishing
-
-Manual publishing is disabled. Use GitHub Actions by pushing tags.
+Publishing is done automatically via GitHub Actions. To publish a new version,
+run `deno task bump` and follow the prompts.
 
 ## License
 
