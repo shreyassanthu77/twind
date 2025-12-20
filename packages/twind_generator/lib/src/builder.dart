@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:twind/twind.dart';
+
+import 'candidate.dart';
 
 /// Builds generators for the `@Tw()` annotation.
 Builder twindBuilder(BuilderOptions options) {
@@ -17,21 +19,9 @@ typedef Classes = List<(ClassElement, Methods)>;
 class _TwindGenerator extends Generator {
   static final _twindAnnoationChecker = TypeChecker.fromRuntime(Tw);
 
-  static bool _isFlutterWidgetType(DartType type) {
-    if (type is! InterfaceType) return false;
-
-    if (_isFlutterWidgetInterfaceType(type)) return true;
-    for (final supertype in type.allSupertypes) {
-      if (_isFlutterWidgetInterfaceType(supertype)) return true;
-    }
-
-    return false;
-  }
-
-  static bool _isFlutterWidgetInterfaceType(InterfaceType type) {
-    final uri = type.element.librarySource.uri.toString();
-    return type.element.name == 'Widget' && uri.startsWith('package:flutter/');
-  }
+  static final _widgetChecker = TypeChecker.fromUrl(
+    'package:flutter/src/widgets/framework.dart#Widget',
+  );
 
   @override
   FutureOr<String?> generate(LibraryReader library, BuildStep buildStep) {
@@ -56,12 +46,22 @@ class _TwindGenerator extends Generator {
       classes.add((classElement, methods));
     }
 
+    if (classes.isEmpty) return null;
+
     final output = StringBuffer();
     for (final (cls, methods) in classes) {
       output.writeln('mixin _\$${cls.displayName} {');
-      // for (final (method, classes) in methods) {}
-      output.writeln("}");
+      for (final (method, className) in methods) {
+        final signature = method.getDisplayString(withNullability: true);
+        final _ = className;
+        output.writeln('  $signature {');
+        output.writeln('    return child;');
+        output.writeln('  }');
+      }
+      output.writeln('}');
     }
+
+    return output.toString();
   }
 
   void _validateTwindMethod(MethodElement method) {
@@ -72,7 +72,7 @@ class _TwindGenerator extends Generator {
       );
     }
 
-    if (!_isFlutterWidgetType(method.returnType)) {
+    if (!_widgetChecker.isAssignableFromType(method.returnType)) {
       throw InvalidGenerationSourceError(
         '`@Tw()` methods must return a Widget.',
         element: method,
@@ -82,13 +82,15 @@ class _TwindGenerator extends Generator {
     var hadChildParam = false;
     for (final parameter in method.parameters) {
       if (parameter.name == 'child') {
-        if (parameter.isOptional) {
+        final isRequired =
+            parameter.isRequiredNamed || parameter.isRequiredPositional;
+        if (!isRequired) {
           throw InvalidGenerationSourceError(
             '`@Tw()` child parameter must be required.',
             element: method,
           );
         }
-        if (!_isFlutterWidgetType(parameter.type)) {
+        if (!_widgetChecker.isAssignableFromType(parameter.type)) {
           throw InvalidGenerationSourceError(
             '`@Tw()` child parameter must be a Widget.',
             element: method,

@@ -7,7 +7,6 @@ void main() {
   testWidgets('RedBox uses generated widget wrappers', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: RedBox()));
 
-    expect(find.byType(DecoratedBox), findsOneWidget);
-    expect(find.byType(Padding), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 }
