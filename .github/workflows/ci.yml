@@ -67,7 +67,7 @@ jobs:
 
       - name: Generate code (twind_example)
         working-directory: packages/twind/example
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Test twind_example
         working-directory: packages/twind/example
