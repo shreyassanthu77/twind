@@ -8,13 +8,15 @@ import {
   type SemVer,
 } from "jsr:@std/semver@1.0.7";
 
-// make sure there are no uncommitted changes
 if ((await $`git status --porcelain`.text()).length > 0) {
   console.log(
     "There are uncommitted changes, please commit them before bumping.",
   );
-  // Deno.exit(1);
+  Deno.exit(1);
 }
+
+await $`deno task analyze`;
+await $`deno task fmt`;
 
 const twindPubspec = (await parse(
   await Deno.readTextFile("packages/twind/pubspec.yaml"),
@@ -71,7 +73,7 @@ await Deno.writeTextFile(
 );
 
 if (confirm("Do you want to commit the changes and tag the release?")) {
-  await $`git add packages/twind/pubspec.yaml packages/twind_generator/pubspec.yaml`;
+  await $`git add .`;
   await $`git commit -m "chore(release): ${bumpedVersion}"`;
   await $`git tag v${bumpedVersion}`;
   if (confirm("Do you want to push the changes and tag?")) {

@@ -16,6 +16,7 @@
     "publish:dry:generator": "dart pub -C packages/twind_generator publish --dry-run",
     "dpub": {
       "dependencies": ["publish:dry:twind", "publish:dry:generator"]
-    }
+    },
+    "bump": "deno run --no-lock -A scripts/bump.ts"
   }
 }
