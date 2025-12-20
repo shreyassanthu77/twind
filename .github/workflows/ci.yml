@@ -3,19 +3,20 @@ name: CI
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
 
 jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      
+
       - name: Get dependencies (twind)
         working-directory: packages/twind
         run: flutter pub get
@@ -23,40 +24,40 @@ jobs:
       - name: Get dependencies (twind_example)
         working-directory: packages/twind/example
         run: flutter pub get
-      
+
       - name: Get dependencies (twind_generator)
         working-directory: packages/twind_generator
         run: dart pub get
-      
+
       - name: Analyze twind
         working-directory: packages/twind
         run: flutter analyze
-      
+
       - name: Analyze twind_generator
         working-directory: packages/twind_generator
         run: dart analyze
-      
+
       - name: Format check twind
         working-directory: packages/twind
         run: dart format --set-exit-if-changed lib example/lib example/test
-      
+
       - name: Format check twind_generator
         working-directory: packages/twind_generator
         run: dart format --set-exit-if-changed lib test
-  
+
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      
+
       - name: Get dependencies (twind_generator)
         working-directory: packages/twind_generator
         run: dart pub get
-      
+
       - name: Test twind_generator
         working-directory: packages/twind_generator
         run: dart test
@@ -72,3 +73,23 @@ jobs:
       - name: Test twind_example
         working-directory: packages/twind/example
         run: flutter test
+
+  publish_twind:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [analyze, test]
+    permissions:
+      id-token: write
+      contents: read
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      working-directory: packages/twind
+
+  publish_twind_generator:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [analyze, test]
+    permissions:
+      id-token: write
+      contents: read
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      working-directory: packages/twind_generator
