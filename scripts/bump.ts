@@ -72,6 +72,13 @@ await Deno.writeTextFile(
   stringify(twindGeneratorPubspec),
 );
 
+updateChangelog(bumpedVersion, "Twind", `packages/twind/CHANGELOG.md`);
+updateChangelog(
+  bumpedVersion,
+  "Twind Generator",
+  `packages/twind_generator/CHANGELOG.md`,
+);
+
 if (confirm("Do you want to commit the changes and tag the release?")) {
   await $`git add .`;
   await $`git commit -m "chore(release): ${bumpedVersion}"`;
@@ -80,4 +87,11 @@ if (confirm("Do you want to commit the changes and tag the release?")) {
     await $`git push`;
     await $`git push --tags`;
   }
+}
+
+function updateChangelog(newVersion: string, name: string, path: string) {
+  const changelog = Deno.readTextFileSync(path);
+  const log = prompt(`Changelog entry for ${name}:`, "N/A");
+  const updated = `## ${newVersion}\n\n${log}\n\n${changelog}`.trim();
+  Deno.writeTextFileSync(path, updated);
 }
