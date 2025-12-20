@@ -6,8 +6,9 @@ part of 'example.dart';
 // _TwindGenerator
 // **************************************************************************
 
+// ignore_for_file: unused_element
 mixin _$RedBox {
-  Widget _red(Widget child, {bool enabled = true}) {
+  Widget _red(Widget child) {
     return child;
   }
 }

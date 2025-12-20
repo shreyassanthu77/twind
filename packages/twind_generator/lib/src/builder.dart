@@ -46,6 +46,7 @@ class _TwindGenerator extends Generator {
     if (classes.isEmpty) return null;
 
     final output = StringBuffer();
+    output.writeln('// ignore_for_file: unused_element');
     for (final (cls, methods) in classes) {
       output.writeln('mixin _\$${cls.displayName} {');
       for (final (method, className) in methods) {
