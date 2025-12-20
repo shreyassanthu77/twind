@@ -1,7 +1,7 @@
 builders:
   tw:
     import: "package:twind_generator/twind_generator.dart"
-    builder_factories: ["twBuilder"]
+    builder_factories: ["twindBuilder"]
     build_extensions: {".dart": [".twind.g.part"]}
     auto_apply: dependents
     build_to: cache
